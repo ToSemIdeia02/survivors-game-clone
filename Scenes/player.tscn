@@ -1,0 +1,96 @@
+[gd_scene load_steps=14 format=3 uid="uid://b1icsuri51fqo"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_2cace"]
+[ext_resource type="Texture2D" uid="uid://bm4cdw5yfrnyk" path="res://Textures/Player/Player_back.png" id="2_22qhy"]
+[ext_resource type="PackedScene" uid="uid://exsm64n6fu4n" path="res://Scenes/Utility/hurt_box.tscn" id="2_iof15"]
+[ext_resource type="Texture2D" uid="uid://bkvnn26rhe50p" path="res://Textures/Player/Player_front.png" id="3_4b0wr"]
+[ext_resource type="Texture2D" uid="uid://bhdpfeoyau3v1" path="res://Textures/Player/Player_back2.png" id="3_xjkyy"]
+[ext_resource type="Texture2D" uid="uid://co8wwuwguhbar" path="res://Textures/Player/Player_left.png" id="4_82i2r"]
+[ext_resource type="Texture2D" uid="uid://bhb3is0pm42rp" path="res://Textures/Player/Player_front2.png" id="4_wso6c"]
+[ext_resource type="Texture2D" uid="uid://qyffysrhbkmp" path="res://Textures/Player/Player_right.png" id="5_bar5y"]
+[ext_resource type="Texture2D" uid="uid://73fa7xxt4a3g" path="res://Textures/Player/Player_left2.png" id="7_0two4"]
+[ext_resource type="Texture2D" uid="uid://bfal13xsng1hg" path="res://Textures/Player/Player_right2.png" id="9_107vg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wcdhf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_22qhy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xjkyy")
+}],
+"loop": true,
+"name": &"back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4b0wr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_wso6c")
+}],
+"loop": true,
+"name": &"front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_82i2r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0two4")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_bar5y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_107vg")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sfark"]
+radius = 8.0
+height = 28.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pgvyt"]
+size = Vector2(18, 35)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+motion_mode = 1
+platform_floor_layers = 0
+script = ExtResource("1_2cace")
+
+[node name="animation_player" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_wcdhf")
+animation = &"front"
+frame_progress = 0.199572
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_sfark")
+
+[node name="HurtBox" parent="." instance=ExtResource("2_iof15")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_pgvyt")
+debug_color = Color(0.474021, 0.49527, 0.840526, 0.42)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+
+[editable path="HurtBox"]

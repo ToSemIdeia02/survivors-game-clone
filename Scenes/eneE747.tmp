@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7wflea3caaw"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_2xdwo"]
+[ext_resource type="Texture2D" uid="uid://duvgkl4aaxyx6" path="res://Textures/Enemy/Giant Fly Sprite Sheet.png" id="2_if10j"]
+
+[sub_resource type="Animation" id="Animation_qi83l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GiantFlySpriteSheet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_0l58n"]
+resource_name = "die"
+length = 0.5
+
+[sub_resource type="Animation" id="Animation_gyk6v"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GiantFlySpriteSheet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 3, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_cpbv3"]
+resource_name = "flip"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xm5tm"]
+_data = {
+"RESET": SubResource("Animation_qi83l"),
+"die": SubResource("Animation_0l58n"),
+"flip": SubResource("Animation_cpbv3"),
+"idle": SubResource("Animation_gyk6v")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3iqyn"]
+radius = 6.0
+height = 14.0
+
+[node name="enemy_giant_fly" type="CharacterBody2D"]
+platform_floor_layers = 0
+script = ExtResource("1_2xdwo")
+
+[node name="animation_giant_fly" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xm5tm")
+}
+
+[node name="GiantFlySpriteSheet" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_if10j")
+hframes = 6
+vframes = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_3iqyn")
